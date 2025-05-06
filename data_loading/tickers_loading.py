@@ -32,12 +32,15 @@ tickers_to_csv_list = [
 
 colors = ['blue', 'orange', 'green', 'red', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
 
+START_DATA_FOR_ANALYSIS = '2023-01-01'
+END_DATA_FOR_ANALYSIS   = '2023-12-31'
+
 for tickers_to_csv in tickers_to_csv_list:
     tickers = tickers_to_csv[0]
     csv_file_name = tickers_to_csv[1]
 
-    data = yf.download(tickers, start='2023-01-01', end='2023-12-31') # Скачиваем данные для акций из tickers за 2023 год
-    daily_data_close_original = data['Close'] # Используем данные по закрытию цен
+    data = yf.download(tickers, start=START_DATA_FOR_ANALYSIS, end=END_DATA_FOR_ANALYSIS) # Скачиваем данные для акций из tickers за 2023 год
+    daily_data_close_original =  data['Close'] # Используем данные по закрытию цен
     daily_data_close_original.to_csv(f"{csv_file_name[:-4]}_original.csv")
 
     daily_data_close = daily_data_close_original.apply(lambda x: x.interpolate(method='linear')).round(4)
